@@ -1,0 +1,5 @@
+.venv/
+.venv-1/
+__pycache__/
+.env
+zyro-dynamics-hr-corpus/

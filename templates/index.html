@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zyro Dynamics HR Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🤖 Zyro Dynamics HR Assistant</h1>
+
+        <p>Your AI-powered assistant for Zyro Dynamics HR policies</p>
+
+        <div class="chat-box">
+
+            <input
+                type="text"
+                id="question"
+                placeholder="Ask a question about HR policies..."
+                autocomplete="off"
+            >
+
+            <button id="askButton">Ask</button>
+
+        </div>
+
+        <div id="answerBox">
+            <p id="answer">Your answer will appear here...</p>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const questionInput = document.getElementById("question");
+        const askButton = document.getElementById("askButton");
+        const answerBox = document.getElementById("answer");
+
+
+        function formatAnswer(text) {
+
+            return text
+                .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                .replace(/\n/g, "<br>")
+                .replace(/^- (.*)$/gm, "• $1")
+                .replace(/^(\d+)\. (.*)$/gm, "<strong>$1.</strong> $2");
+
+        }
+
+
+        async function askQuestion() {
+
+            const question = questionInput.value.trim();
+
+            if (!question) {
+                answerBox.innerHTML = "Please enter a question.";
+                return;
+            }
+
+
+            answerBox.innerHTML = "Thinking... 🤔";
+
+            askButton.disabled = true;
+            askButton.textContent = "Thinking...";
+
+
+            try {
+
+                const response = await fetch("/ask", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        question: question
+                    })
+
+                });
+
+
+                const data = await response.json();
+
+
+                answerBox.innerHTML = formatAnswer(data.answer);
+
+
+            } catch (error) {
+
+                answerBox.innerHTML =
+                    "Sorry, something went wrong. Please try again.";
+
+            }
+
+
+            askButton.disabled = false;
+            askButton.textContent = "Ask";
+
+        }
+
+
+        askButton.addEventListener("click", askQuestion);
+
+
+        questionInput.addEventListener("keydown", function(event) {
+
+            if (event.key === "Enter") {
+                askQuestion();
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
