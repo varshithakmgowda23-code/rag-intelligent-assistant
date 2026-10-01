@@ -1,5 +1,4 @@
 
-
 LLM_Provider = 'groq'
 LLM_Model = 'openai/gpt-oss-120b'
 
@@ -43,7 +42,7 @@ print("Done!")
 from langchain_groq import ChatGroq
 llm_model = ChatGroq(
 model='openai/gpt-oss-120b',
-temperature = 0.7 ,  #<--LEVEL OF RANDOMNESS IN OUTPUT PROMPT GENERATED(sentence getting formed is controlled by temperature)
+temperature = 0.1 ,  #<--LEVEL OF RANDOMNESS IN OUTPUT PROMPT GENERATED(sentence getting formed is controlled by temperature)
 max_tokens = 500
 )
 print(f"LLM_Model groq initialised successfully")
